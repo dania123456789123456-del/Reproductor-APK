@@ -915,57 +915,40 @@ fun VideoPlayerScreen(
    }
 
 
-            AndroidView(
-                factory = { ctx ->
-                    PlayerView(ctx).apply {
-                        useController = false
-                        this.player = player
-                        setShowSubtitleButton(false)
-                        subtitleView?.setStyle(
-                            androidx.media3.ui.CaptionStyleCompat(
-                                android.graphics.Color.WHITE,
-                                android.graphics.Color.TRANSPARENT,
-                                android.graphics.Color.TRANSPARENT,
-                                androidx.media3.ui.CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW,
-                                android.graphics.Color.BLACK,
-                                android.graphics.Typeface.create("serif", android.graphics.Typeface.NORMAL)
-                            )
+                    AndroidView(
+            factory = { ctx ->
+                PlayerView(ctx).apply {
+                    useController = false
+                    this.player = player
+                    setShowSubtitleButton(false)
+                    subtitleView?.setStyle(
+                        androidx.media3.ui.CaptionStyleCompat(
+                            android.graphics.Color.WHITE,
+                            android.graphics.Color.TRANSPARENT,
+                            android.graphics.Color.TRANSPARENT,
+                            androidx.media3.ui.CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW,
+                            android.graphics.Color.BLACK,
+                            android.graphics.Typeface.create("serif", android.graphics.Typeface.NORMAL)
                         )
-                    }.also { playerViewRef = it }
-                },
-                update = { view ->
-    val playerView = view as PlayerView
-    if (playerView.player != player) playerView.player = player
-    playerView.resizeMode = when (scaleMode) {
-        AspectScale.CROP_FILL -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-        AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-        AspectScale.CUSTOM_XY -> AspectRatioFrameLayout.RESIZE_MODE_FILL
-        AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
-        else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
-    }
-   },
-
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center)
-                    .then(
-                        when (scaleMode) {
-                            AspectScale.CROP_FILL -> Modifier.graphicsLayer {
-                                scaleX = 1f / (1f - cropFraction)
-                                scaleY = 1f
-                            }
-                            AspectScale.CUSTOM_XY -> Modifier.graphicsLayer {
-                                scaleX = 1f / (1f - cropFractionX)
-                                scaleY = 1f / (1f - cropFractionY)
-                            }
-                            AspectScale.RATIO_16_9 -> Modifier.aspectRatio(16f / 9f)
-                            AspectScale.RATIO_4_3 -> Modifier.aspectRatio(4f / 3f)
-                            AspectScale.RATIO_21_9 -> Modifier.aspectRatio(21f / 9f)
-                            else -> Modifier.fillMaxSize()
-                        }
                     )
-            )
-        }
+                }.also { playerViewRef.value = it }
+            },
+            update = { view ->
+                val playerView = view as PlayerView
+                if (playerView.player != player) playerView.player = player
+                playerView.resizeMode = when (scaleMode) {
+                    AspectScale.CROP_FILL -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                    AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                    AspectScale.CUSTOM_XY -> AspectRatioFrameLayout.RESIZE_MODE_FILL
+                    AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
+                    else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
+                }
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+        )
+
 
         if (isBuffering) { CircularProgressIndicator(color = Color(0xFF7C3AED), modifier = Modifier.size(60.dp).align(Alignment.Center)) }
 
