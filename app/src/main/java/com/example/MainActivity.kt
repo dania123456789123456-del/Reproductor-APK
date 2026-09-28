@@ -912,7 +912,8 @@ fun VideoPlayerScreen(
         AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
         else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
-}
+},
+
 
             AndroidView(
                 factory = { ctx ->
@@ -933,15 +934,16 @@ fun VideoPlayerScreen(
                     }.also { playerViewRef = it }
                 },
                 update = { view ->
-    if (view.player != player) view.player = player
-    view.resizeMode = when (scaleMode) {
+    val playerView = view as PlayerView
+    if (playerView.player != player) playerView.player = player
+    playerView.resizeMode = when (scaleMode) {
         AspectScale.CROP_FILL -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
         AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
         AspectScale.CUSTOM_XY -> AspectRatioFrameLayout.RESIZE_MODE_FILL
         AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
         else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
-},
+   }
 
                 modifier = Modifier
                     .fillMaxSize()
