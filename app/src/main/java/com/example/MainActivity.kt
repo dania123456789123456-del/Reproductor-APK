@@ -905,13 +905,15 @@ fun VideoPlayerScreen(
             // se ejecuta SIEMPRE que cambien scaleMode/cropFraction, sin depender de esa reactividad.
             var playerViewRef by remember { mutableStateOf<PlayerView?>(null) }
             LaunchedEffect(scaleMode, cropFraction, cropFractionX, cropFractionY, playerViewRef) {
-                playerViewRef?.resizeMode = when (scaleMode) {
-                    AspectScale.CROP_FILL, AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                    AspectScale.CUSTOM_XY, AspectScale.STRETCH, AspectScale.RATIO_16_9,
-                    AspectScale.RATIO_4_3, AspectScale.RATIO_21_9 -> AspectRatioFrameLayout.RESIZE_MODE_FILL
-                    else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
-                }
-            }
+    playerViewRef.value?.resizeMode = when (scaleMode) {
+        AspectScale.CROP_FILL -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+        AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+        AspectScale.CUSTOM_XY -> AspectRatioFrameLayout.RESIZE_MODE_FILL
+        AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
+        else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
+    }
+}
+
             AndroidView(
                 factory = { ctx ->
                     PlayerView(ctx).apply {
@@ -931,16 +933,16 @@ fun VideoPlayerScreen(
                     }.also { playerViewRef = it }
                 },
                 update = { view ->
-                    if (view.player != player) view.player = player
-                    view.resizeMode = when (scaleMode) {
-                        AspectScale.CROP_FILL -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                        AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                        AspectScale.CUSTOM_XY -> AspectRatioFrameLayout.RESIZE_MODE_FILL
-                        AspectScale.STRETCH, AspectScale.RATIO_16_9,
-                        AspectScale.RATIO_4_3, AspectScale.RATIO_21_9 -> AspectRatioFrameLayout.RESIZE_MODE_FILL
-                        else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
-                    }
-                },
+    if (view.player != player) view.player = player
+    view.resizeMode = when (scaleMode) {
+        AspectScale.CROP_FILL -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+        AspectScale.ZOOM -> AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+        AspectScale.CUSTOM_XY -> AspectRatioFrameLayout.RESIZE_MODE_FILL
+        AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
+        else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
+    }
+},
+
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.Center)
