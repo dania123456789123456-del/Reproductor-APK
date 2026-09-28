@@ -307,13 +307,7 @@ class MainActivity : ComponentActivity() {
         isPlayingVideo = true
     }
 
-    private fun setAppMode(mode: String?) {
-        appMode = mode
-        getSharedPreferences("app_prefs", Context.MODE_PRIVATE).edit().apply {
-            if (mode == null) remove("app_mode") else putString("app_mode", mode)
-        }.apply()
-    }
-
+    
     // ✅ NUEVO: reproduce una lista ya armada (episodios de una serie IPTV o una sola película),
     // sin re-analizar el texto como URL — usa el MISMO reproductor y el mismo mecanismo de
     // "siguiente/anterior capítulo" que el modo Links.
