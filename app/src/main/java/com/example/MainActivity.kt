@@ -914,8 +914,7 @@ fun VideoPlayerScreen(
     }
    }
 
-
-                    AndroidView(
+                            AndroidView(
             factory = { ctx ->
                 PlayerView(ctx).apply {
                     useController = false
@@ -948,7 +947,8 @@ fun VideoPlayerScreen(
                 .fillMaxSize()
                 .align(Alignment.Center)
         )
-
+    }
+}
 
         if (isBuffering) { CircularProgressIndicator(color = Color(0xFF7C3AED), modifier = Modifier.size(60.dp).align(Alignment.Center)) }
 
