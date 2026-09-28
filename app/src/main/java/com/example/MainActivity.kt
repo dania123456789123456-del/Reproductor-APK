@@ -912,7 +912,7 @@ fun VideoPlayerScreen(
         AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
         else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
-},
+   }
 
 
             AndroidView(
@@ -943,7 +943,7 @@ fun VideoPlayerScreen(
         AspectScale.STRETCH -> AspectRatioFrameLayout.RESIZE_MODE_FILL
         else -> AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
-   }
+   },
 
                 modifier = Modifier
                     .fillMaxSize()
